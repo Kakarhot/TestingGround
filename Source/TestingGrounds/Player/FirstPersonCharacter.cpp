@@ -1,6 +1,7 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
 #include "FirstPersonCharacter.h"
+#include "Weapons/Gun.h"
 #include "Weapons/BallProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -41,7 +42,6 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 	Mesh1P->RelativeRotation = FRotator(1.9f, -19.19f, 5.2f);
 	Mesh1P->RelativeLocation = FVector(-0.5f, -4.4f, -155.7f);
 
-
 	// Default offset from the character location for projectiles to spawn
 	GunOffset = FVector(100.0f, 0.0f, 10.0f);
 
@@ -78,8 +78,18 @@ void AFirstPersonCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
+	if (GunBlueprint == NULL) {
+		UE_LOG(LogTemp, Warning, TEXT("Gun Blueprint missing"));
+		return;
+	}
+	Gun = GetWorld()->SpawnActor<AGun>(
+		GunBlueprint,
+		Mesh1P->GetSocketLocation(FName(TEXT("GripPoint"))),
+		Mesh1P->GetSocketRotation(FName(TEXT("GripPoint")))
+		);
+
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
-	//FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 
 	// Show or hide the two versions of the gun based on whether or not we're using motion controllers.
 	if (bUsingMotionControllers)
