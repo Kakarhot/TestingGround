@@ -40,10 +40,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimMontage* FireAnimation;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UPROPERTY(BlueprintReadWrite, Category = Gameplay)
 	class UAnimInstance* AnimInstance;
+
+	UFUNCTION(BlueprintCallable)
+	void OnFire();
 
 protected:
 
-	void OnFire();
+
 };
