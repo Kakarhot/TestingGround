@@ -81,9 +81,6 @@ public:
 	uint32 bUsingMotionControllers : 1;
 
 protected:
-	
-	/** Fires a projectile. */
-	void OnFire();
 
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
