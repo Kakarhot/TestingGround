@@ -43,7 +43,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = Gameplay)
 	class UAnimInstance* AnimInstance;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Input")
 	void OnFire();
 
 protected:
