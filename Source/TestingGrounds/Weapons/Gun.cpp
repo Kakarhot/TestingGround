@@ -74,6 +74,9 @@ void AGun::OnFire()
 		{
 			AnimInstance->Montage_Play(FireAnimation, 1.f);
 		}
+		else {
+			UE_LOG(LogTemp, Warning, TEXT("NO ANIMINSTANCE"))
+		}
 	}
 }
 
