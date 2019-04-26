@@ -24,8 +24,8 @@ public:
 	// Sets default values for this character's properties
 	AMannequin();
 
-	UFUNCTION(BlueprintCallable)
-	void Fire();
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void PullTrigger();
 
 protected:
 	// Called when the game starts or when spawned

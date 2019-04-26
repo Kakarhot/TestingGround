@@ -30,11 +30,6 @@ AMannequin::AMannequin()
 	Mesh1P->RelativeLocation = FVector(-0.5f, -4.4f, -155.7f);
 }
 
-void AMannequin::Fire()
-{
-	Gun->OnFire();
-}
-
 // Called when the game starts or when spawned
 void AMannequin::BeginPlay()
 {
@@ -53,6 +48,10 @@ void AMannequin::BeginPlay()
 
 	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 	Gun->AnimInstance = Mesh1P->GetAnimInstance();
+
+	if (InputComponent != NULL) {
+		InputComponent->BindAction("Fire", IE_Pressed, this, &AMannequin::PullTrigger);
+	}
 }
 
 // Called every frame
@@ -67,5 +66,10 @@ void AMannequin::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AMannequin::PullTrigger()
+{
+	Gun->OnFire();
 }
 
