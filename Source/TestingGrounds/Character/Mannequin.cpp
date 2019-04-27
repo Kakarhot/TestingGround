@@ -35,7 +35,7 @@ void AMannequin::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (GunBlueprint == NULL) {
+	if (GunBlueprint == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Gun Blueprint missing"));
 		return;
 	}
@@ -46,10 +46,17 @@ void AMannequin::BeginPlay()
 		Mesh1P->GetSocketRotation(FName(TEXT("GripPoint")))
 		);
 
-	Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-	Gun->AnimInstance = GetMesh()->GetAnimInstance();
+	if (IsPlayerControlled()) {
+		Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
+	else {
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
+	
+	Gun->AnimInstance1P = Mesh1P->GetAnimInstance();
+	Gun->AnimInstance3P = GetMesh()->GetAnimInstance();
 
-	if (InputComponent != NULL) {
+	if (InputComponent != nullptr) {
 		InputComponent->BindAction("Fire", IE_Pressed, this, &AMannequin::PullTrigger);
 	}
 }
@@ -66,6 +73,15 @@ void AMannequin::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AMannequin::UnPossessed()
+{
+	Super::UnPossessed();
+
+	if (Gun != nullptr) {
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	}
 }
 
 void AMannequin::PullTrigger()
