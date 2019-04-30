@@ -71,9 +71,9 @@ bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
 		FCollisionShape::MakeSphere(Radius)
 	);
 
-	FColor DrawColor = HasHit ? FColor::Red : FColor::Green;
-
+	//FColor DrawColor = HasHit ? FColor::Red : FColor::Green;
 	//DrawDebugCapsule(GetWorld(), GlobalLocation, 0, Radius, FQuat::Identity, DrawColor, true, 100);
+
 	return !HasHit;
 }
 
