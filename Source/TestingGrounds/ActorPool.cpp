@@ -13,28 +13,39 @@ UActorPool::UActorPool()
 	// ...
 }
 
-
-void UActorPool::AddToPool()
-{
-}
-
-void UActorPool::ReturnToPool()
-{
-}
-
 AActor * UActorPool::Checkout()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Checkout"));
+
 	return nullptr;
 }
 
-// Called when the game starts
-void UActorPool::BeginPlay()
+void UActorPool::ReturnToPool(AActor* ActorToReturn)
 {
-	Super::BeginPlay();
+	if (ActorToReturn == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[%s] Returned null pointer"), *(this->GetName()));
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Return"));
 
-	// ...
-	
+
+
 }
+
+void UActorPool::AddToPool(AActor* ActorToAdd)
+{
+	if (ActorToAdd == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[%s] Added null pointer"), *(this->GetName()));
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Actor add"), *(this->GetName()));
+}
+
+
+
+
 
 
 

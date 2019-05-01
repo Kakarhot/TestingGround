@@ -16,18 +16,9 @@ public:
 	// Sets default values for this component's properties
 	UActorPool();
 
-	void AddToPool();
-
-	void ReturnToPool();
-
 	AActor* Checkout();
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	void ReturnToPool(AActor* ActorToReturn);
 
-
-
-		
-	
+	void AddToPool(AActor* ActorToAdd);
 };

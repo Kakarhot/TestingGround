@@ -24,5 +24,5 @@ void AInfiniteTerrainGameMode::PopulateBoundsVolumePool()
 
 void AInfiniteTerrainGameMode::AddToPool(ANavMeshBoundsVolume* ActorToAdd)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Add: %s"), *ActorToAdd->GetName())
+	NavBoundsVolumePool->AddToPool(ActorToAdd);
 }
