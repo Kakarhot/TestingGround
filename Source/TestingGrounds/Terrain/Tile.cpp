@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "Classes/Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "ActorPool.h"
 
 // Sets default values
 ATile::ATile()
@@ -42,6 +43,14 @@ void ATile::PlaceActors(TSubclassOf<AActor>ToSpawn, int MinSpawn, int MaxSpawn, 
 			PlaceActor(ToSpawn, SpawnPoint, RandomRotation, RandomScale);
 		}
 	}
+}
+
+void ATile::SetPool(UActorPool * InPool)
+{
+	Pool = InPool;
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Setting Pool %s"), *(this->GetName()), *(Pool->GetName()));
+
+
 }
 
 bool ATile::FindEmptyLocation(FVector& OutLocation, float Radius)
