@@ -1,6 +1,7 @@
 // Yuri
 
 #include "ActorPool.h"
+#include "Classes/GameFramework/Actor.h"
 
 
 // Sets default values for this component's properties
@@ -13,35 +14,31 @@ UActorPool::UActorPool()
 	// ...
 }
 
-AActor * UActorPool::Checkout()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Checkout"));
-
-	return nullptr;
-}
-
-void UActorPool::ReturnToPool(AActor* ActorToReturn)
-{
-	if (ActorToReturn == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("[%s] Returned null pointer"), *(this->GetName()));
-		return;
-	}
-	UE_LOG(LogTemp, Warning, TEXT("Return"));
-
-
-
-}
-
-void UActorPool::AddToPool(AActor* ActorToAdd)
+void UActorPool::Add(AActor* ActorToAdd)
 {
 	if (ActorToAdd == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("[%s] Added null pointer"), *(this->GetName()));
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Actor add"), *(this->GetName()));
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Actor add: %s"), *(this->GetName()), *(ActorToAdd->GetName()));
+	Pool.Push(ActorToAdd);
 }
+
+AActor * UActorPool::Checkout()
+{
+	if (Pool.Num() == 0)
+	{
+		return nullptr;
+	}
+	return Pool.Pop();
+}
+
+void UActorPool::Return(AActor* ActorToReturn)
+{
+	Add(ActorToReturn);
+}
+
 
 
 

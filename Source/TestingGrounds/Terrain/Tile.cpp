@@ -11,29 +11,47 @@ ATile::ATile()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	MinExtent = FVector(0, -2000, 0);
+	MaxExtent = FVector(4000, 2000, 0);
 }
 
 // Called when the game starts or when spawned
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();
-
-
 }
 
 void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 	
-	Pool->ReturnToPool(NavMeshBoundsVolume);
-
+	//UE_LOG(LogTemp, Warning, TEXT("[%s] Returning: %s"), *(this->GetName()), *(NavMeshBoundsVolume->GetName()));
+	//if (NavMeshBoundsVolume != nullptr) 
+	//{
+	//	
+	//}
+	Pool->Return(NavMeshBoundsVolume);
 }
 
-// Called every frame
-void ATile::Tick(float DeltaTime)
+void ATile::SetPool(UActorPool * InPool)
 {
-	Super::Tick(DeltaTime);
+	Pool = InPool;
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Setting Pool %s"), *(this->GetName()), *(InPool->GetName()));
 
+	PositionNavMeshBoundsVolume();
+}
+
+void ATile::PositionNavMeshBoundsVolume()
+{
+	NavMeshBoundsVolume = Pool->Checkout();
+	if (NavMeshBoundsVolume == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[%s] Not Enough Actors in Pool"), *(this->GetName()));
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("[%s] Check out: %s"), *(this->GetName()), *(NavMeshBoundsVolume->GetName()));
+
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
 }
 
 void ATile::PlaceActors(TSubclassOf<AActor>ToSpawn, int MinSpawn, int MaxSpawn, float Radius, float MinScale, float MaxScale)
@@ -51,28 +69,9 @@ void ATile::PlaceActors(TSubclassOf<AActor>ToSpawn, int MinSpawn, int MaxSpawn, 
 	}
 }
 
-void ATile::SetPool(UActorPool * InPool)
-{
-	Pool = InPool;
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Setting Pool %s"), *(this->GetName()), *(InPool->GetName()));
-
-	PositionNavMeshBoundsVolume();
-}
-
-void ATile::PositionNavMeshBoundsVolume()
-{
-	NavMeshBoundsVolume = Pool->Checkout();
-	if (NavMeshBoundsVolume == nullptr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Not Enough Actors in Pool"));
-		return;
-	}
-	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
-}
-
 bool ATile::FindEmptyLocation(FVector& OutLocation, float Radius)
 {
-	FBox Bounds(FVector(0, -2000, 0), FVector(4000, 2000, 0));
+	FBox Bounds(MinExtent, MaxExtent);
 
 	const int MAX_ATTEMPTS = 100;
 	for (int i = 0; i <= MAX_ATTEMPTS; i++) {

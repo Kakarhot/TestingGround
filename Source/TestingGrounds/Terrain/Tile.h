@@ -21,8 +21,6 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	class UActorPool* ActorPool;
 
-	virtual void Tick(float DeltaTime) override;
-
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void PlaceActors(TSubclassOf<AActor>ToSpawn, int MinSpawn=1, int MaxSpawn=1, float Radius=500, float MinScale=1, float MaxScale=1);
 
@@ -36,6 +34,12 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	FVector MinExtent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	FVector MaxExtent;
 
 private:
 	void PositionNavMeshBoundsVolume();

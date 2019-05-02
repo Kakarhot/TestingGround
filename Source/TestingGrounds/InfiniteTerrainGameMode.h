@@ -23,7 +23,7 @@ public:
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Pool")
-	class UActorPool* NavBoundsVolumePool;
+	class UActorPool* NavMeshBoundsVolumePool;
 
 private:
 	void AddToPool(class ANavMeshBoundsVolume* ActorToAdd);
