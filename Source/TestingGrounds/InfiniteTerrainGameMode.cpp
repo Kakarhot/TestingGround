@@ -5,7 +5,7 @@
 #include "AI/Navigation/NavMeshBoundsVolume.h"
 #include "ActorPool.h"
 
-AInfiniteTerrainGameMode::AInfiniteTerrainGameMode() : Super()
+AInfiniteTerrainGameMode::AInfiniteTerrainGameMode() : Super()	// Prevent crashes
 {
 	NavMeshBoundsVolumePool = CreateDefaultSubobject<UActorPool>(TEXT("Nav Mesh Bounds Volume Pool"));
 }
