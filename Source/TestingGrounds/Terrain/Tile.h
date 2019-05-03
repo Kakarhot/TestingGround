@@ -6,8 +6,30 @@
 #include "GameFramework/Actor.h"
 #include "Tile.generated.h"
 
-
 class UActorPool;
+
+USTRUCT()
+struct FSpawnPosition
+{
+	GENERATED_USTRUCT_BODY()
+
+	FVector Location;
+	float Rotation;
+	float Scale;
+};
+
+USTRUCT()
+struct FSpawnParams
+{
+	GENERATED_USTRUCT_BODY()
+
+	int MinSpawn;
+	int MaxSpawn;
+	float MinScale;
+	float MaxScale;
+	float Radius;
+};
+
 
 UCLASS()
 class TESTINGGROUNDS_API ATile : public AActor
@@ -26,8 +48,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Bounds Pool")
 	void SetPool(UActorPool* InPool);
-
-
 
 protected:
 	// Called when the game starts or when spawned
@@ -51,7 +71,9 @@ private:
 
 	bool FindEmptyLocation(FVector& OutLocation, float Radius);
 
-	void PlaceActor(TSubclassOf<AActor>ToSpawn, FVector SpawnPoint, float Rotation, float Scale);
+	void PlaceActor(TSubclassOf<AActor>ToSpawn, const FSpawnPosition& SpawnPosition);
+
+	TArray<FSpawnPosition> RandomSpawnPositions(int MinSpawn, int MaxSpawn, float MinScale, float MaxScale, float Radius);
 
 	UActorPool* Pool;
 
