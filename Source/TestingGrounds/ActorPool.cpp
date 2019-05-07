@@ -18,10 +18,10 @@ void UActorPool::Add(AActor* ActorToAdd)
 {
 	if (ActorToAdd == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("[%s] Added null pointer"), *(this->GetName()));
+		UE_LOG(LogTemp, Warning, TEXT("Add null pointer"));
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("[%s] Actor add: %s"), *(this->GetName()), *(ActorToAdd->GetName()));
+	UE_LOG(LogTemp, Warning, TEXT("Actor add: %s"), *(ActorToAdd->GetName()));
 	Pool.Push(ActorToAdd);
 }
 

@@ -30,12 +30,11 @@ void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 	
-	//UE_LOG(LogTemp, Warning, TEXT("[%s] Returning: %s"), *(this->GetName()), *(NavMeshBoundsVolume->GetName()));
-	//if (NavMeshBoundsVolume != nullptr) 
-	//{
-	//	
-	//}
-	Pool->Return(NavMeshBoundsVolume);
+	if (Pool != nullptr && NavMeshBoundsVolume != nullptr) 
+	{
+		Pool->Return(NavMeshBoundsVolume);
+	}
+
 }
 
 void ATile::SetPool(UActorPool * InPool)
@@ -135,12 +134,13 @@ void ATile::PlaceActor(TSubclassOf<AActor> ToSpawn, const FSpawnPosition& SpawnP
 
 void ATile::PlaceActor(TSubclassOf<APawn> ToSpawn, const FSpawnPosition &SpawnPosition)
 {
-	APawn* Spawned = GetWorld()->SpawnActor<APawn>(ToSpawn);
+	FRotator Rotation = FRotator(0, SpawnPosition.Rotation, 0);
+	APawn* Spawned = GetWorld()->SpawnActor<APawn>(ToSpawn, SpawnPosition.Location, Rotation);
 	if (Spawned)
 	{
 		Spawned->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
-		Spawned->SetActorRelativeLocation(SpawnPosition.Location);
-		Spawned->SetActorRotation(FRotator(0, SpawnPosition.Rotation, 0));
+		//Spawned->SetActorRelativeLocation(SpawnPosition.Location);
+		//Spawned->SetActorRotation(FRotator(0, SpawnPosition.Rotation, 0));
 		Spawned->SpawnDefaultController();
 		Spawned->Tags.Add(FName("Enemy"));
 	}
