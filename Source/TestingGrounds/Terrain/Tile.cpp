@@ -90,7 +90,7 @@ bool ATile::FindEmptyLocation(FVector& OutLocation, float Radius)
 {
 	FBox Bounds(MinExtent, MaxExtent);
 
-	const int MAX_ATTEMPTS = 100;
+	const int MAX_ATTEMPTS = 5;
 	for (int i = 0; i <= MAX_ATTEMPTS; i++) {
 		FVector NewPoint = FMath::RandPointInBox(Bounds);
 		if (CanSpawnAtLocation(NewPoint, Radius)) {
